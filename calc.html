@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<title>Vaasudev's calculator</title>
+<h1 style="color:green;"> Calculator by Vaasudev </h1>
+</head>
+<body>
+<label for="a"> num 1:</label>
+<input type="number" id="a">
+<br/> <br/>
+<label for="aa"> num 2:</label>
+<input type="number" id="aa">
+<br/>
+<br/>
+<button style="background-color: #007BFF; color: #fff;" onclick="getsum()">+</button>
+  <button style="background-color: #007BFF; color: #fff;" onclick="getsub()">-</button>
+  <button style="background-color: #007BFF; color: #fff;" onclick="getpro()">×</button>
+  <button style="background-color: #007BFF; color: #fff;" onclick="getdi()">÷</button>
+  <button style="background-color: #6C757D; color: #fff;" onclick="getsq()">^2</button>
+  <button style="background-color: #6C757D; color: #fff;" onclick="getroot()">√</button>
+  <br/><br/>
+  <button style="background-color: #DC3545; color: #fff;" onclick="clearAll()">Clear All</button>
+<div id="result"></div>
+<div id="result2"></div>
+<div id="result1"></div>
+<div id="result3"></div>
+<div id="result4"></div>
+<div id="result5"></div>
+<div id="result6"></div>
+<div id="result7"></div>
+<div id="result8"></div>
+<div id="result9"></div>
+</body>
+<script>
+
+function getsum(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+    alert("Error: Please enter both numbers.");
+  } else {
+const sum= parseInt(n1)+parseInt(n2);
+document.getElementById("result").textContent=`sum: ${sum}`;
+}
+}
+
+function getpro(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+alert("Error: Please enter both numbers.");
+  } else {
+const product= parseInt(n1)*parseInt(n2);
+document.getElementById("result1").textContent=`Product: ${product}`;
+}
+}
+
+function getsub(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+alert("Error: Please enter both numbers.");
+  } else {
+const dif= parseInt(n1)-parseInt(n2);
+document.getElementById("result2").textContent=`Difference: ${dif}`;
+}
+}
+
+function getroot(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+alert("Error: Please enter both numbers.");
+  } else {
+const root1= Math.sqrt(n1);
+const root2= Math.sqrt(n2);
+document.getElementById("result8").textContent=`Root of first number: ${root1}`;
+document.getElementById("result9").textContent=`Root of first number: ${root2}`;
+}
+}
+
+function getsq(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+alert("Error: Please enter both numbers.");
+  } else {
+const sq1= (n1)*(n1);
+const sq2= (n2)*(n2);
+document.getElementById("result6").textContent=`Square of first number: ${sq1}`;
+document.getElementById("result7").textContent=`Square of first number: ${sq2}`;
+}
+}
+
+function getdi(){
+const n1=document.getElementById("a").value;
+const n2=document.getElementById("aa").value;
+if (n1 === '' || n2 === '') {
+    document.getElementById("result").textContent = "Error: Please enter both numbers.";
+alert("Error: Please enter both numbers.");
+  } else {
+const qu= parseInt(n1)/parseInt(n2);
+const quf= Math.floor(n1/n2);
+const reminder= parseInt(n1)%parseInt(n2);
+document.getElementById("result3").textContent=`Division: ${qu}`;
+document.getElementById("result4").textContent=`Quotient: ${quf}`;
+document.getElementById("result5").textContent=`Reminder: ${reminder}`;
+}
+}
+function clearAll() {
+    document.getElementById("result").textContent = "";
+    document.getElementById("result2").textContent = "";
+    document.getElementById("result1").textContent = "";
+    document.getElementById("result3").textContent = "";
+    document.getElementById("result4").textContent = "";
+    document.getElementById("result5").textContent = "";
+    document.getElementById("result6").textContent = "";
+    document.getElementById("result7").textContent = "";
+    document.getElementById("result8").textContent = "";
+    document.getElementById("result9").textContent = "";
+    document.getElementById("a").value = "";
+    document.getElementById("aa").value = "";
+  }
+</script>
+</body>
+</html>
