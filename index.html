@@ -112,23 +112,36 @@
         playSound();
       }
 
-      function app(sy) {
-        var input = document.getElementById("c");
-        var a = document.getElementById("c").value;
-        if (a == "0" || a == "") {
-          if (sy == ".") {
-            if (a == "") input.value += 0;
-            input.value += sy;
-          }
-          if (sy > 0) {
-            input.value += sy;
-          } else if (a == "" && sy == "0") {
-            document.getElementById("c").value = "0";
-          }
-        } else input.value += sy;
+    function app(sy) {
+  var input = document.getElementById("c");
+  var a = input.value;
 
-        playSound();
+  // If the input is empty or just "0"
+  if (a === "" || a === "0") {
+    if (sy === ".") {
+      input.value = "0.";
+    } else if (!isNaN(sy)) {
+      // if it's a digit
+      input.value = sy;
+    } else {
+      // allow operator after 0
+      input.value = "0" + sy;
+    }
+  } else {
+    // Prevent multiple decimals in one number
+    if (sy === ".") {
+      let parts = a.split(/[\+\-\*\/]/); // split by operators
+      let lastPart = parts[parts.length - 1];
+      if (lastPart.includes(".")) {
+        return; // don't allow another "."
       }
+    }
+    input.value += sy;
+  }
+
+  playSound();
+}
+
       function bs() {
         var textbox = document.getElementById("c");
         var a = document.getElementById("c").value;
