@@ -71,13 +71,16 @@
 
         // Check if the developer key is entered
 
-        if (a === "1*/*/+-+-") {
+        if (a === "000---000") {
           alert("Error log:\n" + elog);
           console.log(elog);
           clr();
           return; // Exit the function if developer key is used
         } else if (a === "111---000") {
           alert("Memory: " + mem5);
+          return;
+        }else if (a === "60065") {
+          alert("You cheeky user 😜😜~  ");
           return;
         }
 
