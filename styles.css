@@ -1,0 +1,85 @@
+body{
+  background-image: url("https://cdn.glitch.global/4aba7458-1964-4806-b002-2d38cf08add5/cool-background.png?v=1728140364849");
+  width:100%;
+  height:100%
+}
+/* Button*/
+button {
+  appearance: none;
+  border: 0.2em solid #e91e63;
+  background: hsl(0 0 0/0);
+  padding: 0.85em 1.5em;
+  color: #e91e63;
+  border-radius: 2em;
+  transition: 0.2s;
+  &:active {
+    background: #e91e63;
+    color: #ffff;
+  }
+}
+button:active {
+  transform: scale(90%);
+}
+button:hover {
+  transform: scale(110%);
+  
+}
+button:focus{
+  border: 0.212em solid #e91e63;
+  border-radius: 2em;
+}
+/* Text*/
+input[type="text"],
+input[type="number"] {
+  appearance: none;
+  border: none;
+  outline: none;
+  border-bottom: 0.2em solid #e91e63;
+  background: rgba(#e91e63, 0.2);
+  border-radius: 0.2em 0.2em 0 0;
+  background-color: #ffd4e4;
+  padding: 0.4em;
+  color: #e91e63;
+  width:200px;
+  height:20px;
+  text-align:right;
+  font-size:20px;
+}
+body {
+  text-align: center;
+  justify-content: center;
+}
+.eq {
+  border: 0.2em solid lime;
+  color: lime;
+  &:active {
+    background: lime;
+  }
+  &:focus{
+  border: 0.212em solid lime;
+  border-radius: 2em;
+}
+}
+.op {
+  border: 0.2em solid goldenrod;
+  color: goldenrod;
+  &:focus{
+  border: 0.212em solid goldenrod;
+  border-radius: 2em;
+}
+  
+  &:active {
+    background: goldenrod;
+  }
+}
+.clr {
+  border: 0.2em solid red;
+  color: red;
+  &:focus{
+  border: 0.212em solid red;
+  border-radius: 2em;
+}
+  &:active {
+    background: red;
+  }
+}

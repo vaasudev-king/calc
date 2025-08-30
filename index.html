@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Calculator</title>
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/4aba7458-1964-4806-b002-2d38cf08add5/calc.png?v=1723538347496"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Calculator</h1>
+    <input type="text" placeholder="0" id="c" readonly /><br />
+    <p style="color: lime" id="ss"></p>
+    <button id="clr" class="clr" title="clear" onclick="clr()">C</button>
+    <button id="m" class="op" title="Save to memory" onclick="mem('M')">
+      M
+    </button>
+    <button id="r" class="op" title="Clear memory" onclick="mem('R')">R</button>
+    <button id="p" class="op" title="Retrive data" onclick="mem('P')">P</button>
+    <br /><br />
+    <button id="7" onclick="app('7')">7</button>
+    <button id="8" onclick="app('8')">8</button>
+    <button id="9" onclick="app('9')">9</button>
+    <button id="+" title="Add" class="op" onclick="app('+')">+</button>
+    <br /><br />
+    <button id="4" onclick="app('4')">4</button>
+    <button id="5" onclick="app('5')">5</button>
+    <button id="6" onclick="app('6')">6</button>
+    <button id="-" title="Sub" class="op" onclick="app('-')">–</button
+    ><br /><br />
+    <button id="1" onclick="app('1')">1</button>
+    <button id="2" onclick="app('2')">2</button>
+    <button id="3" onclick="app('3')">3</button>
+    <button id="*" title="mul" class="op" onclick="app('*')">×</button
+    ><br /><br />
+    <button id="bs" class="clr" onclick="bs()">←</button>
+    <button id="0" onclick="app('0')">0</button>
+    <button id="." onclick="app('.')">.</button>
+    <button id="/" title="Div" class="op" onclick="app('/')">÷</button>
+    <br /><br />
+    <button class="eq" style="width: 200px; height: 40px" onclick="cal()">
+      =</button
+    ><br /><br />
+    <audio
+      id="clickSound"
+      src="https://cdn.glitch.global/4aba7458-1964-4806-b002-2d38cf08add5/click.mp3?v=1723700715874"
+    ></audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.1/math.min.js"></script>
+    <script>
+      var mem5 = 0;
+      if (typeof mem5 != "number") {
+        alert("What a failure");
+        mem5 = 0;
+      }
+
+      var elog = ""; // Initialize elog as an empty string to store error messages
+
+      function playSound() {
+        document.getElementById("clickSound").play();
+      }
+      function cal() {
+        var a = document.getElementById("c").value;
+
+        // Check if the developer key is entered
+
+        if (a === "1*/*/+-+-") {
+          alert("Error log:\n" + elog);
+          console.log(elog);
+          clr();
+          return; // Exit the function if developer key is used
+        } else if (a === "111---000") {
+          alert("Memory: " + mem5);
+          return;
+        }
+
+        try {
+          var result = math.evaluate(a);
+          if (isNaN(result) || a.includes("/0")) {
+            if (a.includes("/0")) {
+              alert("Can't Divide By Zero");
+              clr();
+            } else {
+              alert("Invalid input");
+              clr();
+            }
+            return 0;
+          } else {
+            document.getElementById("c").value = result;
+            playSound();
+            return result;
+          }
+        } catch (e) {
+          if (e.message.includes("expected")) {
+            alert("Enter a valid Expression\n ");
+            document.getElementById("c").value = "";
+          }
+          // Append the error message to elog
+          elog += "\nError: " + e.message;
+          console.log("Error: " + e.message); // Alert the current error
+        }
+        playSound();
+      }
+
+      function app(sy) {
+        var input = document.getElementById("c");
+        var a = document.getElementById("c").value;
+        if (a == "0" || a == "") {
+          if (sy == ".") {
+            if (a == "") input.value += 0;
+            input.value += sy;
+          }
+          if (sy > 0) {
+            input.value += sy;
+          } else if (a == "" && sy == "0") {
+            document.getElementById("c").value = "0";
+          }
+        } else input.value += sy;
+
+        playSound();
+      }
+      function bs() {
+        var textbox = document.getElementById("c");
+        var a = document.getElementById("c").value;
+        textbox.value = textbox.value.slice(0, -1); // Remove the last character
+        playSound();
+      }
+
+      function clr() {
+        document.getElementById("c").value = "";
+        playSound();
+      }
+      function mem(mode) {
+        if (mode == "M") {
+          mem5 = cal();
+          if (mem5) {
+            alert("Saved to Memory Successfully");
+          } else {
+            alert("Unable to save ");
+          }
+        }
+        if (mode == "R") {
+          if (mem5) {
+            alert("Memory Erased");
+            mem5 = 0;
+          } else {
+            alert("Memory Empty");
+          }
+        }
+        if (mode == "P") {
+          if (mem5) {
+            suc("ss", "Paste complete!");
+            document.getElementById("c").value = mem5;
+          } else {
+            alert("Memory Empty");
+          }
+        }
+        playSound();
+      }
+      function suc(id, cnt, ty) {
+        playSound();
+        document.getElementById(id).textContent = cnt;
+        setTimeout(function () {
+          document.getElementById(id).textContent = "";
+        }, 1000);
+      }
+      function sutb(id, cnt, ti) {
+        playSound();
+        document.getElementById(id).value = cnt;
+        setTimeout(function () {
+          document.getElementById(id).value = "";
+        }, ti);
+      }
+      // Add keyboard support
+      document.addEventListener("keydown", function (event) {
+        if (event.key >= "0" && event.key <= "9") {
+          //app(event.key);
+
+          document.getElementById(event.key).click();
+        } else if (event.key === "+") {
+          app("+");
+        } else if (event.key === "-") {
+          app("-");
+        } else if (event.key === "*") {
+          app("*");
+        } else if (event.key === "/") {
+          app("/");
+        } else if (event.key === ".") {
+          app(".");
+        } else if (event.key.toLowerCase() === "e") {
+          app("e");
+        } else if (event.key.toLowerCase() === "p") {
+          app(math.evaluate("pi"));
+        } else if (event.key === "Enter") {
+          cal();
+          event.preventDefault();
+        } else if (event.key === "Backspace") {
+          bs();
+        } else if (event.key === "Escape" || event.key.toLowerCase() === "c") {
+          //clr();
+          sutb("c", "Cleard!", 350);
+        } else if (event.key === "m" || event.key === "M") {
+          mem("M");
+        } else if (event.key === "r" || event.key === "R") {
+          mem("R");
+        } else if (event.key === "v" || event.key === "V") {
+          mem("P");
+        }
+      });
+    </script>
+  </body>
+</html>
