@@ -6,473 +6,632 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Calculator</title>
-    <link
-      rel="icon"
-      href=".\icon.png"
-      type="image/x-icon"
-    />
-    <!--link rel="stylesheet" href="styles.css" /-->
+    <title>Calculator ✨</title>
+    <link rel="icon" href="./icon.png" type="image/x-icon" />
     <style>
-        /* Button*/
-button {
-  appearance: none;
-  border: 0.2em solid #e91e63;
-  background: hsl(0 0 0/0);
-  padding: 0.85em 1.5em;
-  color: #e91e63;
-  border-radius: 2em;
-  transition: 0.2s;
- 
-}
-button:active {
-  transform: scale(90%);
-  background: #e91e63;
-    color: #ffff;
-}
-button:hover {
-  transform: scale(110%);
-  
-}
-button:focus{
-  border: 0.212em solid #e91e63;
-  border-radius: 2em;
-}
-/* Text*/
-input[type="text"],
-input[type="number"] {
-  appearance: none;
-  border: none;
-  outline: none;
-  border-bottom: 0.2em solid #e91e63;
-  background: rgba(#e91e63, 0.2);
-  border-radius: 0.2em 0.2em 0 0;
-  background-color: #ffd4e4;
-  padding: 0.4em;
-  color: #e91e63;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 200px;
-    height: 35px;
-  text-align:right;
-  font-size:20px;
-}
-*{
-    -webkit-tap-highlight-color: transparent;
-}
-body {
-  text-align: center;
-  justify-content: center;
-    -webkit-user-select:none;
-    user-select:none;
-    -webkit-touch-callout:none;
-}
-.eq {
-  border: 0.2em solid lime;
-  color: lime;
-  &:active {
-    background: lime;
-  }
-  &:focus{
-  border: 0.212em solid lime;
-  border-radius: 2em;
-}
-}
-.op {
-  border: 0.2em solid goldenrod;
-  color: goldenrod;
-  &:focus{
-  border: 0.212em solid goldenrod;
-  border-radius: 2em;
-}
-  
-  &:active {
-    background: goldenrod;
-  }
-}
-.clr {
-  border: 0.2em solid red;
-  color: red;
-  &:focus{
-  border: 0.212em solid red;
-  border-radius: 2em;
-}
-  &:active {
-    background: red;
-  }
-}
+      :root {
+        --bg-grad: linear-gradient(135deg, #ffe6f0 0%, #fff5f9 50%, #f3e7ff 100%);
+        --card-bg: rgba(255, 255, 255, 0.72);
+        --card-border: rgba(255, 255, 255, 0.9);
+        --card-shadow: 0 25px 50px -12px rgba(233, 30, 99, 0.22),
+          inset 0 1px 1px rgba(255, 255, 255, 0.9);
+        --text-main: #c2185b;
+        --text-muted: #e57399;
+        --display-bg: rgba(255, 228, 239, 0.65);
+        --display-border: rgba(233, 30, 99, 0.25);
 
-.calculator {
-  display: inline-block;
-}
+        --btn-bg: rgba(255, 255, 255, 0.85);
+        --btn-border: rgba(233, 30, 99, 0.18);
+        --btn-shadow: 0 4px 12px rgba(233, 30, 99, 0.1);
+        --btn-hover: #fff0f6;
 
-/* Phones */
-@media (max-width: 600px) {
-  .calculator {
-    transform: scale(1.45);
-    transform-origin: top center;
-    margin-top: 25px;
-  }
-}
+        --op-bg: rgba(255, 243, 205, 0.85);
+        --op-color: #d97706;
+        --op-border: rgba(217, 119, 6, 0.25);
 
-/* Very small phones */
-@media (max-width: 380px) {
-  .calculator {
-    transform: scale(1.7);
-  }
-}
-.popup{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.35);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    animation:fade .2s;
-}
+        --clr-bg: rgba(254, 226, 226, 0.85);
+        --clr-color: #e11d48;
+        --clr-border: rgba(225, 29, 72, 0.25);
 
-.popup-box{
-    background:#fff0f6;
-    border:3px solid #e91e63;
-    border-radius:20px;
-    padding:22px;
-    width:280px;
-    max-width:85%;
-    text-align:center;
-    color:#e91e63;
-    font-size:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
+        --eq-grad: linear-gradient(135deg, #ff4d94 0%, #e91e63 100%);
+        --eq-shadow: 0 8px 20px rgba(233, 30, 99, 0.35);
+      }
 
-.popup-box button{
-    margin-top:18px;
-    width:120px;
-}
+      body.dark {
+        --bg-grad: radial-gradient(circle at top left, #2a1222 0%, #121016 55%, #0d0c11 100%);
+        --card-bg: rgba(28, 22, 34, 0.78);
+        --card-border: rgba(255, 138, 194, 0.2);
+        --card-shadow: 0 25px 60px rgba(0, 0, 0, 0.65),
+          0 0 30px rgba(233, 30, 99, 0.15),
+          inset 0 1px 1px rgba(255, 255, 255, 0.08);
+        --text-main: #ff8ac2;
+        --text-muted: #b36b8e;
+        --display-bg: rgba(16, 12, 20, 0.75);
+        --display-border: rgba(255, 138, 194, 0.25);
 
-@keyframes fade{
-    from{opacity:0;}
-    to{opacity:1;}
-}
+        --btn-bg: rgba(44, 34, 52, 0.85);
+        --btn-border: rgba(255, 138, 194, 0.15);
+        --btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        --btn-hover: rgba(65, 48, 77, 0.95);
 
-@keyframes pop{
-    from{
-        transform:scale(.7);
-        opacity:0;
-    }
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
-}
+        --op-bg: rgba(66, 48, 24, 0.75);
+        --op-color: #fbbf24;
+        --op-border: rgba(251, 191, 36, 0.25);
 
-.popup-box{
-    animation:pop .2s ease;
-}
-.theme-switch{
-    position:fixed;
-    top:calc(env(safe-area-inset-top) + 12px);
-    right:15px;
-    z-index:1000;
-}
+        --clr-bg: rgba(76, 26, 40, 0.75);
+        --clr-color: #fb7185;
+        --clr-border: rgba(251, 113, 133, 0.25);
 
-.switch{
-    position:relative;
-    display:inline-block;
-    width:54px;
-    height:30px;
-}
-.calculator{
-    margin-top:20px;
-}
-.footer{
-    color:#b0b0b0;
-    opacity:.5;
-    font-size:11px;
-}
-.switch input{
-    display:none;
-}
+        --eq-grad: linear-gradient(135deg, #ff5ca8 0%, #d81b60 100%);
+        --eq-shadow: 0 8px 25px rgba(255, 92, 168, 0.4);
+      }
 
-.slider{
-    position:absolute;
-    inset:0;
-    cursor:pointer;
-    background:#ffd4e4;
-    border:2px solid #e91e63;
-    border-radius:30px;
-    transition:.3s;
-}
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
 
-.slider:before{
-    content:"☀️";
-    position:absolute;
-    width:22px;
-    height:22px;
-    left:2px;
-    top:2px;
-    background:white;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:.3s;
-    font-size:13px;
-}
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--bg-grad);
+        color: var(--text-main);
+        transition: background 0.4s ease, color 0.3s ease;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        overflow-x: hidden;
+        padding: 16px;
+      }
 
-input:checked + .slider{
-    background:#333;
-    border-color:#666;
-}
+      /* Ambient glowing orbs behind the glass */
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        filter: blur(75px);
+        z-index: -1;
+        opacity: 0.55;
+        pointer-events: none;
+      }
 
-input:checked + .slider:before{
-    transform:translateX(24px);
-    content:"🌙";
-}
+      body::before {
+        background: #ff7eb3;
+        top: 8%;
+        left: 12%;
+      }
 
-body.dark{
-    background:#181818;
-    color:white;
-}
+      body::after {
+        background: #c084fc;
+        bottom: 8%;
+        right: 12%;
+      }
 
-body.dark input{
-    background:#2b2b2b;
-    color:#ff8ac2;
-}
+      /* Theme Toggle */
+      .theme-switch {
+        position: fixed;
+        top: calc(env(safe-area-inset-top) + 16px);
+        right: 18px;
+        z-index: 1000;
+      }
 
-body.dark .popup-box{
-    background:#262626;
-    color:#ff8ac2;
-}
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 58px;
+        height: 32px;
+      }
 
-body.dark h1{
-    color:#ff8ac2;
-}
-.footer{
-    margin-top:20px;
-    margin-bottom:15px;
-    text-align:center;
-    font-size:12px;
-    color:#888;
-    opacity:.7;
-}
+      .switch input {
+        display: none;
+      }
 
-.footer:hover{
-    opacity:1;
-    color:#e91e63;
-}
+      .slider {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        border: 1.5px solid var(--card-border);
+        border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(233, 30, 99, 0.18);
+        transition: 0.3s ease;
+      }
+
+      .slider:before {
+        content: "☀️";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        left: 3px;
+        top: 2.5px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-size: 13px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+        content: "🌙";
+        background: #2b2135;
+      }
+
+      /* Main Calculator Chassis */
+      .calculator {
+        width: 100%;
+        max-width: 340px;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1.5px solid var(--card-border);
+        border-radius: 32px;
+        padding: 24px 20px 22px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.35s ease;
+      }
+
+      .calc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        padding: 0 4px;
+      }
+
+      .calc-header h1 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .status-toast {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: #10b981;
+        min-height: 16px;
+        transition: opacity 0.2s;
+      }
+
+      /* Display Screen */
+      .display-wrap {
+        position: relative;
+        margin-bottom: 18px;
+      }
+
+      input[type="text"]#ip {
+        appearance: none;
+        width: 100%;
+        height: 74px;
+        border: 1.5px solid var(--display-border);
+        border-radius: 20px;
+        background: var(--display-bg);
+        padding: 12px 18px;
+        color: var(--text-main);
+        text-align: right;
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        outline: none;
+        box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+      }
+
+      input[type="text"]#ip::placeholder {
+        color: var(--text-muted);
+        opacity: 0.55;
+      }
+
+      /* 4-Column Keypad Grid */
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 11px;
+      }
+
+      button {
+        appearance: none;
+        height: 56px;
+        border-radius: 18px;
+        border: 1.5px solid var(--btn-border);
+        background: var(--btn-bg);
+        color: var(--text-main);
+        font-size: 20px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: var(--btn-shadow);
+        transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+          background 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button:hover {
+        background: var(--btn-hover);
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: scale(0.92);
+      }
+
+      button:focus {
+        outline: none;
+      }
+
+      /* Operators & Memory */
+      .op {
+        background: var(--op-bg);
+        color: var(--op-color);
+        border-color: var(--op-border);
+        font-weight: 700;
+      }
+
+      .op:hover {
+        filter: brightness(1.04);
+      }
+
+      /* Clear & Backspace */
+      .clr {
+        background: var(--clr-bg);
+        color: var(--clr-color);
+        border-color: var(--clr-border);
+        font-weight: 700;
+      }
+
+      .clr:hover {
+        filter: brightness(1.04);
+      }
+
+      /* Equals Hero Button */
+      .eq {
+        grid-column: span 4;
+        height: 54px;
+        margin-top: 2px;
+        border: none;
+        border-radius: 18px;
+        background: var(--eq-grad);
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 700;
+        box-shadow: var(--eq-shadow);
+      }
+
+      .eq:hover {
+        background: var(--eq-grad);
+        filter: brightness(1.08);
+        transform: translateY(-2px);
+      }
+
+      /* Popup Modal */
+      .popup {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 10, 20, 0.45);
+        backdrop-filter: blur(6px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        animation: fade 0.2s ease;
+      }
+
+      .popup-box {
+        background: var(--card-bg);
+        backdrop-filter: blur(22px);
+        border: 1.5px solid var(--card-border);
+        border-radius: 26px;
+        padding: 24px 22px;
+        width: 290px;
+        max-width: 86%;
+        text-align: center;
+        color: var(--text-main);
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+        animation: pop 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+        white-space: pre-line;
+      }
+
+      .popup-box button {
+        margin: 18px auto 0;
+        width: 130px;
+        height: 44px;
+        border: none;
+        background: var(--eq-grad);
+        color: #fff;
+        font-size: 15px;
+        box-shadow: var(--eq-shadow);
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes pop {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .calculator {
+          padding: 18px 14px;
+          border-radius: 26px;
+        }
+        button {
+          height: 50px;
+          font-size: 18px;
+          border-radius: 15px;
+        }
+        input[type="text"]#ip {
+          height: 64px;
+          font-size: 28px;
+        }
+      }
     </style>
   </head>
   <body>
     <div id="popup" class="popup">
-  <div class="popup-box">
-    <div id="popupText">Message</div>
-    <button onclick="closePopup()">OK</button>
-  </div>
-</div>
-<div class="theme-switch">
-    <label class="switch">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider"></span>
-    </label>
-</div>
-    <div class="calculator">
-    <h1>Calculator</h1>
-    <input type="text" placeholder="0" id="ip" readonly /><br /><br>
-    <button id="c" class="clr" title="clear" onclick="clr()">C</button>
-    <button id="m" class="op" onclick="mem('M')">M</button>
-    <button id="r" class="op" onclick="mem('R')">R</button>
-    <button id="p" class="op" onclick="mem('P')">P</button>
-    <br /><br />
-    <button id="7" onclick="app('7')">7</button>
-    <button id="8" onclick="app('8')">8</button>
-    <button id="9" onclick="app('9')">9</button>
-    <button id="+" class="op" onclick="app('+')">+</button>
-    <br /><br />
-    <button id="4" onclick="app('4')">4</button>
-    <button  id="5" onclick="app('5')">5</button>
-    <button id="6" onclick="app('6')">6</button>
-    <button id="-" class="op" onclick="app('-')">–</button><br /><br />
-    <button id="1" onclick="app('1')">1</button>
-    <button id="2"  onclick="app('2')">2</button>
-    <button id="3" onclick="app('3')">3</button>
-    <button id="*" class="op" onclick="app('*')">×</button><br /><br />
-    <button id="bs" class="clr" onclick="bs()">←</button>
-    <button id="0" onclick="app('0')">0</button>
-    <button id="." onclick="app('.')">.</button>
-    <button id="/" class="op" onclick="app('/')">÷</button>
-    <br /><br />
-    <button class="eq" style="width: 200px; height: 40px" onclick="cal()">
-      =</button
-    ><br /><br />
+      <div class="popup-box">
+        <div id="popupText">Message</div>
+        <button onclick="closePopup()">OK</button>
+      </div>
     </div>
-    
-    <p style="color: lime" id="ss"></p>
-    <audio
-      id="clickSound"
-      src="./click.mp3"
-    ></audio>
+
+    <div class="theme-switch">
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="calculator">
+      <div class="calc-header">
+        <h1>Calculator ✦</h1>
+        <p class="status-toast" id="ss"></p>
+      </div>
+
+      <div class="display-wrap">
+        <input type="text" placeholder="0" id="ip" readonly />
+      </div>
+
+      <div class="keypad">
+        <button id="c" class="clr" title="Clear" onclick="clr()">C</button>
+        <button id="m" class="op" title="Save to Memory" onclick="mem('M')">M</button>
+        <button id="r" class="op" title="Erase Memory" onclick="mem('R')">R</button>
+        <button id="p" class="op" title="Paste Memory" onclick="mem('P')">P</button>
+
+        <button id="7" onclick="app('7')">7</button>
+        <button id="8" onclick="app('8')">8</button>
+        <button id="9" onclick="app('9')">9</button>
+        <button id="+" class="op" onclick="app('+')">+</button>
+
+        <button id="4" onclick="app('4')">4</button>
+        <button id="5" onclick="app('5')">5</button>
+        <button id="6" onclick="app('6')">6</button>
+        <button id="-" class="op" onclick="app('-')">–</button>
+
+        <button id="1" onclick="app('1')">1</button>
+        <button id="2" onclick="app('2')">2</button>
+        <button id="3" onclick="app('3')">3</button>
+        <button id="*" class="op" onclick="app('*')">×</button>
+
+        <button id="bs" class="clr" title="Backspace" onclick="bs()">←</button>
+        <button id="0" onclick="app('0')">0</button>
+        <button id="." onclick="app('.')">.</button>
+        <button id="/" class="op" onclick="app('/')">÷</button>
+
+        <button class="eq" onclick="cal()">=</button>
+      </div>
+    </div>
+
+    <audio id="clickSound" src="./click.mp3"></audio>
 
     <script src="./math.js"></script>
     <script>
-      function popup(msg){
-    document.getElementById("popupText").innerHTML = msg;
-    document.getElementById("popup").style.display = "flex";
-    ps();
-}
+      var re7 = null;
+      var exl = "";
 
-function closePopup(){
-    document.getElementById("popup").style.display = "none";
-}
-      var re7 = 0;
+      function popup(msg) {
+        document.getElementById("popupText").textContent = msg;
+        document.getElementById("popup").style.display = "flex";
+        ps();
+      }
 
-      var exl = ""; // Initialize exl as an empty string to store error messages
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+      }
 
       function ps() {
-    const sound = document.getElementById("clickSound").cloneNode();
-    sound.play().catch(() => {});
-}
-      function cal() {
-        var a = document.getElementById("ip").value;
+        const sound = document.getElementById("clickSound").cloneNode();
+        sound.play().catch(() => {});
+      }
 
-        // Check if the developer key is entered
+      function cal() {
+        var input = document.getElementById("ip");
+        var a = input.value.trim();
+
+        if (a === "") {
+          ps();
+          return null;
+        }
+
+        // Developer keys
         if (a === "111---000") {
-          popup("Error log:\n" + exl);
+          popup("Error log:\n" + (exl || "No errors yet!"));
           console.log(exl);
           clr();
-          return; // Exit the function if developer key is used
+          return null;
         } else if (a === "111+++000") {
-          popup("Memory: " + re7);
-          return;// Exit the function if developer key is used
+          popup("Memory: " + (re7 !== null ? re7 : "Empty"));
+          return null;
         }
 
         try {
           var result = math.evaluate(a);
-          if (isNaN(result) || a.includes("/0") ) {
-            if (a.includes("/0")) {
-              popup("Can't Divide By Zero");
-              clr();
-            } else {
-              popup("Invalid input");
-              clr();
-            }
-            return 0;
-          } else {
-            document.getElementById("ip").value = result;
-            ps();
-            return result;
+          if (typeof result !== "number" || isNaN(result)) {
+            popup("Invalid input");
+            clr();
+            return null;
           }
+          if (!isFinite(result)) {
+            popup("Can't Divide By Zero");
+            clr();
+            return null;
+          }
+
+          result = Number(result.toPrecision(12));
+          input.value = result;
+          ps();
+          return result;
         } catch (e) {
-          if (e.message.includes("expected")) {
-            popup("Enter a valid Expression\n ");
-            document.getElementById("ip").value = "";
-          }
-          // Append the error message to exl
+          popup("Enter a valid Expression");
+          input.value = "";
           exl += "\nError: " + e.message;
-          console.log("Error: " + e.message); // popup the current error
+          console.log("Error: " + e.message);
+          return null;
         }
-        ps();
       }
 
       function app(sy) {
         var input = document.getElementById("ip");
-        var a = document.getElementById("ip").value;
-         if ((a === "" || a === "0") && sy === ".") {
-        input.value = "0.";
-        ps();
-        return;
-    }const ops = "+-*/";
+        var a = input.value;
+        const ops = "+-*/";
 
-// Prevent duplicate operators (except developer keys)
-if (ops.includes(sy) && a !== "111" && !a.startsWith("111+") && !a.startsWith("111-")) {
-    const last = a.slice(-1);
-
-    if (ops.includes(last)) {
-        input.value = a.slice(0, -1) + sy;
-        ps();
-        return;
-    }
-}
-
-// Prevent multiple decimal points in the current number
-if (sy === ".") {
-    const currentNumber = a.split(/[+\-*/]/).pop();
-
-    if (currentNumber.includes(".")) {
-        ps();
-        return;
-    }
-}
-     if (a === "0" && "+-*/".includes(sy)) {
-        input.value += sy;   // 0+, 0-, 0*, 0/
-        ps();
-        return;
-    }
-        if (a=='0' || a=='') {
-          if(sy>0){
-            input.value += sy;
-          } else if(a=='' && sy=='0'){
-            document.getElementById('ip').value = "0";
+        if (sy === ".") {
+          const currentNumber = a.split(/[+\-*/]/).pop();
+          if (currentNumber.includes(".")) {
+            ps();
+            return;
           }
-       }else input.value += sy;
+          if (currentNumber === "") {
+            input.value += "0.";
+            ps();
+            return;
+          }
+        }
 
+        if (
+          ops.includes(sy) &&
+          a !== "111" &&
+          !a.startsWith("111+") &&
+          !a.startsWith("111-")
+        ) {
+          if (a === "") {
+            if (sy === "-") {
+              input.value = "-";
+            }
+            ps();
+            return;
+          }
+          const last = a.slice(-1);
+          if (ops.includes(last)) {
+            input.value = a.slice(0, -1) + sy;
+            ps();
+            return;
+          }
+        }
+
+        if (a === "0" && !ops.includes(sy) && sy !== ".") {
+          input.value = sy;
+          ps();
+          return;
+        }
+
+        if (/(^|[+\-*/])0$/.test(a) && !ops.includes(sy) && sy !== ".") {
+          input.value = a.slice(0, -1) + sy;
+          ps();
+          return;
+        }
+
+        input.value += sy;
         ps();
       }
+
       function bs() {
         var textbox = document.getElementById("ip");
-        var a = document.getElementById("ip").value;
-        textbox.value = textbox.value.slice(0, -1); // Remove the last character
-         if (textbox.value === "") {
-        textbox.placeholder = "0";
-    }
+        textbox.value = textbox.value.slice(0, -1);
+        if (textbox.value === "") {
+          textbox.placeholder = "0";
+        }
         ps();
       }
 
       function clr() {
-        document.getElementById("ip").value = "";
+        var textbox = document.getElementById("ip");
+        textbox.value = "";
+        textbox.placeholder = "0";
         ps();
       }
+
       function mem(mode) {
-        if (mode == "M") {
-          re7 = cal();
-          if (re7) {
+        if (mode === "M") {
+          var val = cal();
+          if (val !== null && typeof val === "number" && isFinite(val)) {
+            re7 = val;
             popup("Saved to Memory Successfully");
           } else {
-            popup("Unable to save ");
+            popup("Unable to save");
           }
-        }
-        if (mode == "R") {
-          if (re7) {
+        } else if (mode === "R") {
+          if (re7 !== null) {
+            re7 = null;
             popup("Memory Erased");
-            re7 = 0;
+          } else {
+            popup("Memory Empty");
+          }
+        } else if (mode === "P") {
+          if (re7 !== null) {
+            const input = document.getElementById("ip");
+            if (input.value === "" || input.value === "0") {
+              input.value = re7;
+            } else {
+              input.value += re7;
+            }
+            suc("ss", "Paste complete!");
           } else {
             popup("Memory Empty");
           }
         }
-        if (mode == "P") {
-          if (re7 !== 0) {
-    const input = document.getElementById("ip");
-
-    if (input.value === "" || input.value === "0") {
-        input.value = re7;
-    } else {
-        input.value += re7;
-    }
-
-    suc("ss", "Paste complete!");
-} else {
-    popup("Memory Empty");
-}
-        }
         ps();
       }
-      function suc(id, cnt, ty) {
+
+      function suc(id, cnt) {
         ps();
         document.getElementById(id).textContent = cnt;
         setTimeout(function () {
           document.getElementById(id).textContent = "";
         }, 1000);
       }
+
       function sutb(id, cnt, ti) {
         ps();
         document.getElementById(id).value = cnt;
@@ -480,22 +639,28 @@ if (sy === ".") {
           document.getElementById(id).value = "";
         }, ti);
       }
-const toggle = document.getElementById("themeToggle");
 
-toggle.checked = localStorage.getItem("theme") === "dark";
-document.body.classList.toggle("dark", toggle.checked);
+      const toggle = document.getElementById("themeToggle");
+      toggle.checked = localStorage.getItem("theme") === "dark";
+      document.body.classList.toggle("dark", toggle.checked);
 
-toggle.onchange = () => {
-    document.body.classList.toggle("dark", toggle.checked);
-    localStorage.setItem("theme", toggle.checked ? "dark" : "light");
-};
+      toggle.onchange = () => {
+        document.body.classList.toggle("dark", toggle.checked);
+        localStorage.setItem("theme", toggle.checked ? "dark" : "light");
+      };
 
-      // Add keyboard support
       document.addEventListener("keydown", function (event) {
+        const popupEl = document.getElementById("popup");
+        if (popupEl.style.display === "flex") {
+          if (event.key === "Enter" || event.key === "Escape") {
+            closePopup();
+            event.preventDefault();
+          }
+          return;
+        }
+
         if (event.key >= "0" && event.key <= "9") {
-          //app(event.key);
-          
-           document.getElementById(event.key).click();
+          document.getElementById(event.key).click();
         } else if (event.key === "+") {
           app("+");
         } else if (event.key === "-") {
@@ -503,31 +668,29 @@ toggle.onchange = () => {
         } else if (event.key === "*") {
           app("*");
         } else if (event.key === "/") {
+          event.preventDefault();
           app("/");
         } else if (event.key === ".") {
           app(".");
         } else if (event.key.toLowerCase() === "e") {
-          app("e");
+          app(String(math.evaluate("e")));
         } else if (event.key.toLowerCase() === "p") {
-          app(math.evaluate("pi"));
-        } else if (event.key === "Enter") {
+          app(String(math.evaluate("pi")));
+        } else if (event.key === "Enter" || event.key === "=") {
           cal();
           event.preventDefault();
         } else if (event.key === "Backspace") {
           bs();
         } else if (event.key === "Escape" || event.key.toLowerCase() === "c") {
-          //clr();
-          sutb("ip", "Cleard!", 350);
-        } else if (event.key === "m" || event.key === "M") {
+          sutb("ip", "Cleared!", 350);
+        } else if (event.key.toLowerCase() === "m") {
           mem("M");
-        } else if (event.key === "r" || event.key === "R") {
+        } else if (event.key.toLowerCase() === "r") {
           mem("R");
-        } else if (event.key === "v" || event.key === "V") {
+        } else if (event.key.toLowerCase() === "v") {
           mem("P");
         }
-        
       });
     </script>
-    
   </body>
 </html>
