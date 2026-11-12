@@ -442,12 +442,12 @@
         <button id="1" onclick="app('1')">1</button>
         <button id="2" onclick="app('2')">2</button>
         <button id="3" onclick="app('3')">3</button>
-        <button id="*" class="op" onclick="app('*')">×</button>
+        <button id="*" class="op" onclick="app('×')">×</button>
 
         <button id="bs" class="clr" title="Backspace" onclick="bs()">←</button>
         <button id="0" onclick="app('0')">0</button>
         <button id="." onclick="app('.')">.</button>
-        <button id="/" class="op" onclick="app('/')">÷</button>
+        <button id="/" class="op" onclick="app('÷')">÷</button>
 
         <button class="eq" onclick="cal()">=</button>
       </div>
@@ -457,7 +457,7 @@
 
     <script src="./math.js"></script>
     <script>
-      var re7 = null;
+      var kokoro = null;
       var exl = "";
 
       function popup(msg) {
@@ -491,12 +491,15 @@
           clr();
           return null;
         } else if (a === "111+++000") {
-          popup("Memory: " + (re7 !== null ? re7 : "Empty"));
+          popup("Memory: " + (kokoro !== null ? kokoro : "Empty"));
           return null;
         }
 
+        // Swap pretty symbols (×, ÷, –) to math operators (*, /, -) before evaluating
+        var expr = a.replace(/×/g, "*").replace(/÷/g, "/").replace(/–/g, "-");
+
         try {
-          var result = math.evaluate(a);
+          var result = math.evaluate(expr);
           if (typeof result !== "number" || isNaN(result)) {
             popup("Invalid input");
             clr();
@@ -524,10 +527,14 @@
       function app(sy) {
         var input = document.getElementById("ip");
         var a = input.value;
-        const ops = "+-*/";
+        const ops = "+-–*×/÷";
+
+        // Normalize keyboard * and / to pretty × and ÷ on screen
+        if (sy === "*") sy = "×";
+        if (sy === "/") sy = "÷";
 
         if (sy === ".") {
-          const currentNumber = a.split(/[+\-*/]/).pop();
+          const currentNumber = a.split(/[+\-–*×/÷]/).pop();
           if (currentNumber.includes(".")) {
             ps();
             return;
@@ -546,7 +553,7 @@
           !a.startsWith("111-")
         ) {
           if (a === "") {
-            if (sy === "-") {
+            if (sy === "-" || sy === "–") {
               input.value = "-";
             }
             ps();
@@ -566,7 +573,7 @@
           return;
         }
 
-        if (/(^|[+\-*/])0$/.test(a) && !ops.includes(sy) && sy !== ".") {
+        if (/(^|[+\-–*×/÷])0$/.test(a) && !ops.includes(sy) && sy !== ".") {
           input.value = a.slice(0, -1) + sy;
           ps();
           return;
@@ -596,25 +603,25 @@
         if (mode === "M") {
           var val = cal();
           if (val !== null && typeof val === "number" && isFinite(val)) {
-            re7 = val;
+            kokoro = val;
             popup("Saved to Memory Successfully");
           } else {
             popup("Unable to save");
           }
         } else if (mode === "R") {
-          if (re7 !== null) {
-            re7 = null;
+          if (kokoro !== null) {
+            kokoro = null;
             popup("Memory Erased");
           } else {
             popup("Memory Empty");
           }
         } else if (mode === "P") {
-          if (re7 !== null) {
+          if (kokoro !== null) {
             const input = document.getElementById("ip");
             if (input.value === "" || input.value === "0") {
-              input.value = re7;
+              input.value = kokoro;
             } else {
-              input.value += re7;
+              input.value += kokoro;
             }
             suc("ss", "Paste complete!");
           } else {
@@ -666,10 +673,10 @@
         } else if (event.key === "-") {
           app("-");
         } else if (event.key === "*") {
-          app("*");
+          app("×");
         } else if (event.key === "/") {
           event.preventDefault();
-          app("/");
+          app("÷");
         } else if (event.key === ".") {
           app(".");
         } else if (event.key.toLowerCase() === "e") {
