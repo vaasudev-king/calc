@@ -588,6 +588,15 @@ function ps() {
       }
 
       function app(sy) {
+        for (let i of sy) {
+  if (!"1234567890÷×-+.e/*".includes(i)) {
+     popup("Nice try 😏");
+     return;
+     
+  }
+}
+         
+        
         ipEl.focus();
         const a = ipEl.value;
         const start = ipEl.selectionStart ?? a.length;
@@ -595,6 +604,8 @@ function ps() {
         const before = a.slice(0, start);
         const after = a.slice(end);
         const ops = "+-–*×/÷";
+
+        
 
         // Normalize keyboard * and / to pretty × and ÷ on screen
         if (sy === "*") sy = "×";
@@ -760,6 +771,9 @@ function ps() {
       };
 
       document.addEventListener("keydown", function (event) {
+        if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+          event.preventDefault();
+        }
         const popupEl = document.getElementById("popup");
         if (popupEl.style.display === "flex") {
           if (event.key === "Enter" || event.key === "Escape") {
