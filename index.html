@@ -19,6 +19,7 @@
         --text-muted: #e57399;
         --display-bg: rgba(255, 228, 239, 0.65);
         --display-border: rgba(233, 30, 99, 0.25);
+        --caret: #e91e63;
 
         --btn-bg: rgba(255, 255, 255, 0.85);
         --btn-border: rgba(233, 30, 99, 0.18);
@@ -48,6 +49,7 @@
         --text-muted: #b36b8e;
         --display-bg: rgba(16, 12, 20, 0.75);
         --display-border: rgba(255, 138, 194, 0.25);
+        --caret: #ff5ca8;
 
         --btn-bg: rgba(44, 34, 52, 0.85);
         --btn-border: rgba(255, 138, 194, 0.15);
@@ -209,7 +211,7 @@
         transition: opacity 0.2s;
       }
 
-      /* Display Screen */
+      /* Display Screen with Blinking Caret */
       .display-wrap {
         position: relative;
         margin-bottom: 18px;
@@ -224,13 +226,22 @@
         background: var(--display-bg);
         padding: 12px 18px;
         color: var(--text-main);
+        caret-color: var(--caret);
         text-align: right;
         font-size: 32px;
         font-weight: 700;
         letter-spacing: 0.5px;
         outline: none;
+        user-select: text;
+        -webkit-user-select: text;
         box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.04);
-        transition: all 0.3s ease;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+      }
+
+      input[type="text"]#ip:focus {
+        border-color: var(--caret);
+        box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.04),
+          0 0 0 3px rgba(233, 30, 99, 0.14);
       }
 
       input[type="text"]#ip::placeholder {
@@ -420,36 +431,43 @@
       </div>
 
       <div class="display-wrap">
-        <input type="text" placeholder="0" id="ip" readonly />
+        <input
+          type="text"
+          placeholder="0"
+          id="ip"
+          inputmode="none"
+          autocomplete="off"
+          spellcheck="false"
+        />
       </div>
 
       <div class="keypad">
-        <button id="c" class="clr" title="Clear" onclick="clr()">C</button>
-        <button id="m" class="op" title="Save to Memory" onclick="mem('M')">M</button>
-        <button id="r" class="op" title="Erase Memory" onclick="mem('R')">R</button>
-        <button id="p" class="op" title="Paste Memory" onclick="mem('P')">P</button>
+        <button id="c" class="clr" title="Clear" onmousedown="event.preventDefault()" onclick="clr()">C</button>
+        <button id="m" class="op" title="Save to Memory" onmousedown="event.preventDefault()" onclick="mem('M')">M</button>
+        <button id="r" class="op" title="Erase Memory" onmousedown="event.preventDefault()" onclick="mem('R')">R</button>
+        <button id="p" class="op" title="Paste Memory" onmousedown="event.preventDefault()" onclick="mem('P')">P</button>
 
-        <button id="7" onclick="app('7')">7</button>
-        <button id="8" onclick="app('8')">8</button>
-        <button id="9" onclick="app('9')">9</button>
-        <button id="+" class="op" onclick="app('+')">+</button>
+        <button id="7" onmousedown="event.preventDefault()" onclick="app('7')">7</button>
+        <button id="8" onmousedown="event.preventDefault()" onclick="app('8')">8</button>
+        <button id="9" onmousedown="event.preventDefault()" onclick="app('9')">9</button>
+        <button id="+" class="op" onmousedown="event.preventDefault()" onclick="app('+')">+</button>
 
-        <button id="4" onclick="app('4')">4</button>
-        <button id="5" onclick="app('5')">5</button>
-        <button id="6" onclick="app('6')">6</button>
-        <button id="-" class="op" onclick="app('-')">–</button>
+        <button id="4" onmousedown="event.preventDefault()" onclick="app('4')">4</button>
+        <button id="5" onmousedown="event.preventDefault()" onclick="app('5')">5</button>
+        <button id="6" onmousedown="event.preventDefault()" onclick="app('6')">6</button>
+        <button id="-" class="op" onmousedown="event.preventDefault()" onclick="app('-')">–</button>
 
-        <button id="1" onclick="app('1')">1</button>
-        <button id="2" onclick="app('2')">2</button>
-        <button id="3" onclick="app('3')">3</button>
-        <button id="*" class="op" onclick="app('×')">×</button>
+        <button id="1" onmousedown="event.preventDefault()" onclick="app('1')">1</button>
+        <button id="2" onmousedown="event.preventDefault()" onclick="app('2')">2</button>
+        <button id="3" onmousedown="event.preventDefault()" onclick="app('3')">3</button>
+        <button id="*" class="op" onmousedown="event.preventDefault()" onclick="app('×')">×</button>
 
-        <button id="bs" class="clr" title="Backspace" onclick="bs()">←</button>
-        <button id="0" onclick="app('0')">0</button>
-        <button id="." onclick="app('.')">.</button>
-        <button id="/" class="op" onclick="app('÷')">÷</button>
+        <button id="bs" class="clr" title="Backspace" onmousedown="event.preventDefault()" onclick="bs()">←</button>
+        <button id="0" onmousedown="event.preventDefault()" onclick="app('0')">0</button>
+        <button id="." onmousedown="event.preventDefault()" onclick="app('.')">.</button>
+        <button id="/" class="op" onmousedown="event.preventDefault()" onclick="app('÷')">÷</button>
 
-        <button class="eq" onclick="cal()">=</button>
+        <button class="eq" onmousedown="event.preventDefault()" onclick="cal()">=</button>
       </div>
     </div>
 
@@ -459,6 +477,12 @@
     <script>
       var kokoro = null;
       var exl = "";
+      const ipEl = document.getElementById("ip");
+
+      // Keep the blinking caret alive right when the page loads
+      window.addEventListener("load", () => {
+        ipEl.focus();
+      });
 
       function popup(msg) {
         document.getElementById("popupText").textContent = msg;
@@ -468,6 +492,7 @@
 
       function closePopup() {
         document.getElementById("popup").style.display = "none";
+        ipEl.focus();
       }
 
       function ps() {
@@ -475,11 +500,23 @@
         sound.play().catch(() => {});
       }
 
+      // Helper to insert text right at the blinking cursor position
+      function insertAtCursor(str) {
+        ipEl.focus();
+        const start = ipEl.selectionStart ?? ipEl.value.length;
+        const end = ipEl.selectionEnd ?? ipEl.value.length;
+        const val = ipEl.value;
+
+        ipEl.value = val.slice(0, start) + str + val.slice(end);
+        const newPos = start + str.length;
+        ipEl.setSelectionRange(newPos, newPos);
+      }
+
       function cal() {
-        var input = document.getElementById("ip");
-        var a = input.value.trim();
+        var a = ipEl.value.trim();
 
         if (a === "") {
+          ipEl.focus();
           ps();
           return null;
         }
@@ -512,12 +549,14 @@
           }
 
           result = Number(result.toPrecision(12));
-          input.value = result;
+          ipEl.value = String(result);
+          ipEl.focus();
+          ipEl.setSelectionRange(ipEl.value.length, ipEl.value.length);
           ps();
           return result;
         } catch (e) {
           popup("Enter a valid Expression");
-          input.value = "";
+          ipEl.value = "";
           exl += "\nError: " + e.message;
           console.log("Error: " + e.message);
           return null;
@@ -525,77 +564,114 @@
       }
 
       function app(sy) {
-        var input = document.getElementById("ip");
-        var a = input.value;
+        ipEl.focus();
+        const a = ipEl.value;
+        const start = ipEl.selectionStart ?? a.length;
+        const end = ipEl.selectionEnd ?? a.length;
+        const before = a.slice(0, start);
+        const after = a.slice(end);
         const ops = "+-–*×/÷";
 
         // Normalize keyboard * and / to pretty × and ÷ on screen
         if (sy === "*") sy = "×";
         if (sy === "/") sy = "÷";
 
+        // Decimal handling around cursor
         if (sy === ".") {
-          const currentNumber = a.split(/[+\-–*×/÷]/).pop();
-          if (currentNumber.includes(".")) {
+          const leftNum = before.split(/[+\-–*×/÷]/).pop();
+          const rightNum = after.split(/[+\-–*×/÷]/)[0];
+          if ((leftNum + rightNum).includes(".")) {
             ps();
             return;
           }
-          if (currentNumber === "") {
-            input.value += "0.";
+          if (leftNum === "") {
+            insertAtCursor("0.");
             ps();
             return;
           }
         }
 
+        // Operator guard around cursor (except developer keys)
         if (
           ops.includes(sy) &&
           a !== "111" &&
           !a.startsWith("111+") &&
           !a.startsWith("111-")
         ) {
-          if (a === "") {
+          if (before === "" && after === "") {
             if (sy === "-" || sy === "–") {
-              input.value = "-";
+              insertAtCursor("-");
             }
             ps();
             return;
           }
-          const last = a.slice(-1);
-          if (ops.includes(last)) {
-            input.value = a.slice(0, -1) + sy;
+          const prevChar = before.slice(-1);
+          const nextChar = after.slice(0, 1);
+
+          // If cursor is right after an operator, replace that operator
+          if (ops.includes(prevChar)) {
+            ipEl.value = before.slice(0, -1) + sy + after;
+            const pos = start;
+            ipEl.setSelectionRange(pos, pos);
+            ps();
+            return;
+          }
+          // If cursor is right before an operator, replace that next operator
+          if (ops.includes(nextChar)) {
+            ipEl.value = before + sy + after.slice(1);
+            const pos = start + 1;
+            ipEl.setSelectionRange(pos, pos);
             ps();
             return;
           }
         }
 
-        if (a === "0" && !ops.includes(sy) && sy !== ".") {
-          input.value = sy;
+        // Replace lone leading zero when typing a digit
+        if (a === "0" && start === 1 && !ops.includes(sy) && sy !== ".") {
+          ipEl.value = sy;
+          ipEl.setSelectionRange(1, 1);
           ps();
           return;
         }
 
-        if (/(^|[+\-–*×/÷])0$/.test(a) && !ops.includes(sy) && sy !== ".") {
-          input.value = a.slice(0, -1) + sy;
+        // Replace standalone zero right after an operator before cursor
+        if (/(^|[+\-–*×/÷])0$/.test(before) && !ops.includes(sy) && sy !== ".") {
+          ipEl.value = before.slice(0, -1) + sy + after;
+          ipEl.setSelectionRange(start, start);
           ps();
           return;
         }
 
-        input.value += sy;
+        insertAtCursor(sy);
         ps();
       }
 
       function bs() {
-        var textbox = document.getElementById("ip");
-        textbox.value = textbox.value.slice(0, -1);
-        if (textbox.value === "") {
-          textbox.placeholder = "0";
+        ipEl.focus();
+        const start = ipEl.selectionStart ?? ipEl.value.length;
+        const end = ipEl.selectionEnd ?? ipEl.value.length;
+        const val = ipEl.value;
+
+        if (start !== end) {
+          // Delete selected range
+          ipEl.value = val.slice(0, start) + val.slice(end);
+          ipEl.setSelectionRange(start, start);
+        } else if (start > 0) {
+          // Delete one character directly behind the blinking cursor
+          ipEl.value = val.slice(0, start - 1) + val.slice(start);
+          ipEl.setSelectionRange(start - 1, start - 1);
+        }
+
+        if (ipEl.value === "") {
+          ipEl.placeholder = "0";
         }
         ps();
       }
 
       function clr() {
-        var textbox = document.getElementById("ip");
-        textbox.value = "";
-        textbox.placeholder = "0";
+        ipEl.value = "";
+        ipEl.placeholder = "0";
+        ipEl.focus();
         ps();
       }
 
@@ -617,11 +693,12 @@
           }
         } else if (mode === "P") {
           if (kokoro !== null) {
-            const input = document.getElementById("ip");
-            if (input.value === "" || input.value === "0") {
-              input.value = kokoro;
+            if (ipEl.value === "" || ipEl.value === "0") {
+              ipEl.value = String(kokoro);
+              ipEl.focus();
+              ipEl.setSelectionRange(ipEl.value.length, ipEl.value.length);
             } else {
-              input.value += kokoro;
+              insertAtCursor(String(kokoro));
             }
             suc("ss", "Paste complete!");
           } else {
@@ -641,9 +718,11 @@
 
       function sutb(id, cnt, ti) {
         ps();
-        document.getElementById(id).value = cnt;
+        const el = document.getElementById(id);
+        el.value = cnt;
         setTimeout(function () {
-          document.getElementById(id).value = "";
+          el.value = "";
+          el.focus();
         }, ti);
       }
 
@@ -666,35 +745,58 @@
           return;
         }
 
+        // Allow Left / Right / Home / End arrow keys to move the blinking cursor naturally
+        if (
+          event.key === "ArrowLeft" ||
+          event.key === "ArrowRight" ||
+          event.key === "Home" ||
+          event.key === "End"
+        ) {
+          ipEl.focus();
+          return;
+        }
+
         if (event.key >= "0" && event.key <= "9") {
+          event.preventDefault();
           document.getElementById(event.key).click();
         } else if (event.key === "+") {
+          event.preventDefault();
           app("+");
         } else if (event.key === "-") {
+          event.preventDefault();
           app("-");
         } else if (event.key === "*") {
+          event.preventDefault();
           app("×");
         } else if (event.key === "/") {
           event.preventDefault();
           app("÷");
         } else if (event.key === ".") {
+          event.preventDefault();
           app(".");
         } else if (event.key.toLowerCase() === "e") {
+          event.preventDefault();
           app(String(math.evaluate("e")));
         } else if (event.key.toLowerCase() === "p") {
+          event.preventDefault();
           app(String(math.evaluate("pi")));
         } else if (event.key === "Enter" || event.key === "=") {
-          cal();
           event.preventDefault();
+          cal();
         } else if (event.key === "Backspace") {
+          event.preventDefault();
           bs();
         } else if (event.key === "Escape" || event.key.toLowerCase() === "c") {
+          event.preventDefault();
           sutb("ip", "Cleared!", 350);
         } else if (event.key.toLowerCase() === "m") {
+          event.preventDefault();
           mem("M");
         } else if (event.key.toLowerCase() === "r") {
+          event.preventDefault();
           mem("R");
         } else if (event.key.toLowerCase() === "v") {
+          event.preventDefault();
           mem("P");
         }
       });
