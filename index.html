@@ -478,7 +478,11 @@
       var kokoro = null;
       var exl = "";
       const ipEl = document.getElementById("ip");
-
+      var anger=0;
+      // Hard-lock #ip against any raw browser typing, paste, or drop
+      ipEl.addEventListener("beforeinput", (e) => e.preventDefault());
+      ipEl.addEventListener("paste", (e) => e.preventDefault());
+      ipEl.addEventListener("drop", (e) => e.preventDefault());
       // Keep the blinking caret alive right when the page loads
       window.addEventListener("load", () => {
         ipEl.focus();
@@ -770,12 +774,13 @@ function ps() {
         localStorage.setItem("theme", toggle.checked ? "dark" : "light");
       };
 
-      document.addEventListener("keydown", function (event) {
-        if (!event.ctrlKey && !event.metaKey && !event.altKey) {
-          event.preventDefault();
-        }
+   document.addEventListener("keydown", function (event) {
+    
+        
+
         const popupEl = document.getElementById("popup");
         if (popupEl.style.display === "flex") {
+          event.preventDefault()
           if (event.key === "Enter" || event.key === "Escape") {
             closePopup();
             event.preventDefault();
@@ -783,7 +788,7 @@ function ps() {
           return;
         }
 
-        // Allow Left / Right / Home / End arrow keys to move the blinking cursor naturally
+        // Allow Left / Right / Home / End arrow keys to move the blinking cursor
         if (
           event.key === "ArrowLeft" ||
           event.key === "ArrowRight" ||
@@ -794,50 +799,55 @@ function ps() {
           return;
         }
 
-        if (event.key >= "0" && event.key <= "9") {
+        if (!event.ctrlKey && !event.metaKey && !event.altKey) {
           event.preventDefault();
+        }
+
+        if (event.key >= "0" && event.key <= "9") {
           document.getElementById(event.key).click();
         } else if (event.key === "+") {
-          event.preventDefault();
           app("+");
         } else if (event.key === "-") {
-          event.preventDefault();
           app("-");
         } else if (event.key === "*") {
-          event.preventDefault();
           app("×");
         } else if (event.key === "/") {
-          event.preventDefault();
           app("÷");
         } else if (event.key === ".") {
-          event.preventDefault();
           app(".");
         } else if (event.key.toLowerCase() === "e") {
-          event.preventDefault();
           app(String(math.evaluate("e")));
         } else if (event.key.toLowerCase() === "p") {
-          event.preventDefault();
           app(String(math.evaluate("pi")));
         } else if (event.key === "Enter" || event.key === "=") {
-          event.preventDefault();
           cal();
         } else if (event.key === "Backspace") {
-          event.preventDefault();
           bs();
         } else if (event.key === "Escape" || event.key.toLowerCase() === "c") {
-          event.preventDefault();
           sutb("ip", "Cleared!", 350);
         } else if (event.key.toLowerCase() === "m") {
-          event.preventDefault();
           mem("M");
         } else if (event.key.toLowerCase() === "r") {
-          event.preventDefault();
           mem("R");
         } else if (event.key.toLowerCase() === "v") {
-          event.preventDefault();
           mem("P");
+        } else if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key.length === 1) {
+          // Only trigger sassy anger on actual invalid characters (like alphabets)!
+          if (anger === 0) {
+            popup("Cant insert alphabet...");
+          } else if (anger === 3) {
+            popup("I SAID CANT INSERT ALPHABET 💢");
+          } else if (anger === 4 || anger === 5) {
+            popup("ARE YOU OUT OF YOUR MIND? 😤");
+          } else if (anger === 6) {
+            popup("Do whatever 😮‍💨! you wont change , do you?...");
+          }
+          else if(anger%10===0){
+            popup("😮‍💨");
+          }
+          anger = anger + 1;
         }
       });
-    </script>
+   </script>
   </body>
 </html>
