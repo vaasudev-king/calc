@@ -471,7 +471,7 @@
       </div>
     </div>
 
-    <audio id="clickSound" src="./click.mp3"></audio>
+   
 
     <script src="./math.js"></script>
     <script>
@@ -495,18 +495,7 @@
         ipEl.focus();
       }
 
-      // Zero-latency Web Audio API setup for click.mp3
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let clickBuffer = null;
-
-// Preload and decode click.mp3 into RAM once
-fetch("./click.mp3")
-  .then((res) => res.arrayBuffer())
-  .then((data) => audioCtx.decodeAudioData(data))
-  .then((buffer) => {
-    clickBuffer = buffer;
-  })
-  .catch(() => {});
+     
 
 // 10-channel preloaded Audio Pool (works in WebView file:// & browsers!)
 const AUDIO_POOL_SIZE = 10;
@@ -569,7 +558,7 @@ function ps() {
 
         try {
           var result = math.evaluate(expr);
-          if (typeof result !== "number" || isNaN(result)) {
+          if (typeof result !== "number" ) {
             popup("Invalid input");
             clr();
             return null;
@@ -587,7 +576,10 @@ function ps() {
           ps();
           return result;
         } catch (e) {
-          popup("Enter a valid Expression");
+          console.log("Enter a valid Expression: \n"+e.message);
+          popup("Enter a valid Expression: \n"+e.message);
+          
+
           ipEl.value = "";
           exl += "\nError: " + e.message;
           console.log("Error: " + e.message);
