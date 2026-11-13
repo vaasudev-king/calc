@@ -495,10 +495,42 @@
         ipEl.focus();
       }
 
-      function ps() {
-        const sound = document.getElementById("clickSound").cloneNode();
-        sound.play().catch(() => {});
-      }
+      // Zero-latency Web Audio API setup for click.mp3
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let clickBuffer = null;
+
+// Preload and decode click.mp3 into RAM once
+fetch("./click.mp3")
+  .then((res) => res.arrayBuffer())
+  .then((data) => audioCtx.decodeAudioData(data))
+  .then((buffer) => {
+    clickBuffer = buffer;
+  })
+  .catch(() => {});
+
+// 10-channel preloaded Audio Pool (works in WebView file:// & browsers!)
+const AUDIO_POOL_SIZE = 10;
+const clickPool = Array.from({ length: AUDIO_POOL_SIZE }, () => {
+  const audio = new Audio("./click.mp3");
+  audio.preload = "auto";
+  return audio;
+});
+let poolFallbackIdx = 0;
+
+function ps() {
+  // Find the first audio slot that is not currently playing
+  let player = clickPool.find((a) => a.paused || a.ended);
+
+  // If all 10 are somehow playing at the exact same split-second, cycle the oldest one
+  if (!player) {
+    player = clickPool[poolFallbackIdx];
+    poolFallbackIdx = (poolFallbackIdx + 1) % AUDIO_POOL_SIZE;
+  }
+
+  player.currentTime = 0;
+  player.play().catch(() => {});
+}
+
 
       // Helper to insert text right at the blinking cursor position
       function insertAtCursor(str) {
@@ -522,12 +554,12 @@
         }
 
         // Developer keys
-        if (a === "111---000") {
+        if (a === "111---111") {
           popup("Error log:\n" + (exl || "No errors yet!"));
           console.log(exl);
           clr();
           return null;
-        } else if (a === "111+++000") {
+        } else if (a === "111+++111") {
           popup("Memory: " + (kokoro !== null ? kokoro : "Empty"));
           return null;
         }
